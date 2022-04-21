@@ -17,4 +17,7 @@ class WhiskyScraper(scrapy.Spider):
                 'price': price,
                 'link': link,
             }
-       
+
+        next_page = response.css('a.action.next').attrib['href']
+        if next_page:
+            yield response.follow(next_page, callback=self.parse)
