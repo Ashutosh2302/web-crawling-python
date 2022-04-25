@@ -5,9 +5,20 @@
 
 
 # useful for handling different item types with a single interface
+import pymongo
 from itemadapter import ItemAdapter
 
 
 class WhiskyscraperPipeline:
+
+    def __init__(self):
+        self.connection = pymongo.MongoClient(
+            'localhost',
+            27017
+        )
+        db = self.connection['whisky']
+        self.collection = db['whisky_details']
+
     def process_item(self, item, spider):
+        self.collection.insert(dict(item))
         return item
